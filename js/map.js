@@ -117,7 +117,6 @@ sit.initMap = function () {
             new ol.control.ScaleLine(),
             new ol.control.Zoom()
         ],
-        interactions: [selectPointerMove],
         target: 'map',
         layers: [wmtsLayer, wmsLayer, sit.geojsonLayer],
         view: new ol.View({
@@ -129,71 +128,7 @@ sit.initMap = function () {
             extent: sit.mapExtent
         })
     });
-
-    // sit.map.on('singleclick', function(evt) {
-    //
-    //     // document.getElementById('info').innerHTML = '';
-    //     // var viewResolution = /** @type {number} */ (sit.map.getView().getResolution());
-    //     // var url = wmsLayer.getSource().getGetFeatureInfoUrl(
-    //     //   evt.coordinate, viewResolution, sit.mapCRS,
-    //     //   {'INFO_FORMAT': 'application/json'}
-    //     // );
-    //     // console.log(url);
-    //     // $.ajax({
-    //     //     type: "GET",
-    //     //     url: url,
-    //     //     dataType: "application/json",
-    //     //     success: function(response) {
-    //     //         console.log(response);
-    //     //
-    //     //     }
-    //     // });
-    //     // generate a GetFeature request
-    //     var featureRequest = new ol.format.WFS().writeGetFeature({
-    //         srsName: sit.mapCRS,
-    //         featureNS: 'mapnv.ch',
-    //         featurePrefix: 'gmf_',
-    //         featureTypes: sit.wmslayers,
-    //         outputFormat: 'geojson',
-    //         // filter: ol.format.filter.Intersects('geom', new ol.geom.Point(evt.coordinate), sit.mapCRS),
-    //         // filter: andFilter(
-    //         // likeFilter('name', 'Mississippi*'),
-    //         // equalToFilter('waterway', 'riverbank')
-    //         // )
-    //     });
-    //
-    //     // then post the request and add the received features to a layer
-    //     fetch(sit.wms, {
-    //         method: 'POST',
-    //         body: new XMLSerializer().serializeToString(featureRequest)
-    //     }).then(function(response) {
-    //         return response.json();
-    //     }).then(function(json) {
-    //         var features = new GeoJSON().readFeatures(json);
-    //          sit.geojsonLayer.getSource().clear()
-    //          sit.geojsonLayer.getSource().addFeatures(features)
-    //     });
-    //
-    //
-    //
-    //     // if (url) {
-    //         // $.ajax({
-    //             // type: "GET",
-    //             // url: url,
-    //             // dataType: "jsonp xml",
-    //             // success: function(response) {
-    //                 // console.log(response);
-    //                  // var vectorSource = new ol.source.VectorSource({
-    //                     // format: new ol.format.WFS(),
-    //                     // url: url
-    //                 // });
-    //                 // console.log(vectorSource.getFeatures())
-    //
-    //             // }
-    //         // });
-    //
-    //
-    //     // }
-    // });
+	
+	sit.map.addInteraction(selectPointerMove);
 
 }
