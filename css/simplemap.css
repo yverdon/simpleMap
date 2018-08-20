@@ -1,0 +1,41 @@
+.map {
+    height: 100%;
+    width: 100%;
+    border: none;
+    margin: none !important;
+    padding: none !important;
+}
+
+body {
+    height: 100%;
+    width: 100%;
+    border: none;
+    margin: none;
+    padding: none;
+}
+
+html {
+    height: 100%;
+    width: 100%;
+    border: none;
+    margin: none;
+    padding: none;
+}
+
+#info {
+    position: absolute;
+    bottom: 0px;
+    height: 150px;
+    width: 100%;
+    background-color: #c9d8f2;
+    z-index: 100;
+    border: 1px solid gray;
+    opacity: 0.8;
+}
+
+#legend {
+  position: absolute;
+  left: 50px;
+  top: 50px;
+  z-index: 101;
+}
