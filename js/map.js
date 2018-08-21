@@ -28,10 +28,27 @@ sit.initMap = function () {
         opacity: 0.9
     });
 
+    var overlayStyle = [
+        new ol.style.Style({
+            fill: new ol.style.Fill({ color: [255, 255, 255, 0.5] })
+        }),
+        new ol.style.Style({
+            stroke: new ol.style.Stroke({
+                color: [255, 255, 255, 1], width: 3.5
+            })
+        }),
+        new ol.style.Style({
+            stroke: new ol.style.Stroke({
+                color: [0, 153, 255, 1], width: 10
+            })
+        })
+    ];
+
     sit.geojsonLayer = new ol.layer.Vector({
         opacity: 0,
         source: new ol.source.Vector({
-        })
+        }),
+        style: overlayStyle
     });
 
     for (var i=0; i<sit.wmslayers.length;i++) {
