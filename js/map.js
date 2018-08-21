@@ -13,13 +13,9 @@ sit.initMap = function () {
 
     ol.proj.addProjection(swissProjection);
 
-
     var mapProjection = swissProjection;
     mapProjection.setExtent([485869.5728, 76443.1884, 837076.5648, 299941.7864]);
 
-
-    // var mapProjection = ol.proj.get(sit.mapCRS);
-    // mapProjection.setExtent([2531872, 1191280, 2550332, 1176940]);
 
     var wmsLayer = new ol.layer.Image({
         source: new ol.source.ImageWMS({
@@ -33,52 +29,58 @@ sit.initMap = function () {
     });
 
     sit.geojsonLayer = new ol.layer.Vector({
-        opacity: 1,
+        opacity: 0,
         source: new ol.source.Vector({
         })
     });
 
-    var featureRequest = new ol.format.WFS().writeGetFeature({
-        srsName: sit.mapCRS,
-        featureNS: 'mapnv.ch',
-        featurePrefix: 'gmf_',
-        featureTypes: sit.wmslayers,
-        outputFormat: 'geojson',
-    });
+    for (var i=0; i<sit.wmslayers.length;i++) {
+      var singlelayer = sit.wmslayers[i];
+      var featureRequest = new ol.format.WFS().writeGetFeature({
+          srsName: sit.mapCRS,
+          featureNS: 'mapnv.ch',
+          featurePrefix: 'gmf_',
+          featureTypes: [singlelayer],
+          outputFormat: 'geojson',
+      });
 
-    // then post the request and add the received features to a layer
-    fetch(sit.wms, {
-        method: 'POST',
-        body: new XMLSerializer().serializeToString(featureRequest)
-    }).then(function(response) {
-        return response.json();
-    }).then(function(json) {
+      // then post the request and add the received features to a layer
+      fetch(sit.wms, {
+          method: 'POST',
+          body: new XMLSerializer().serializeToString(featureRequest)
+      }).then(function(response) {
+          return response.json();
+      }).then(function(json) {
 
-        var gJson = new ol.format.GeoJSON();
-        var feats = [];
-        for (var i=0; i < json.features.length; i++) {
-          feats.push(gJson.readFeature(json.features[i]));
-        }
-        sit.geojsonLayer.getSource().addFeatures(feats)
+          var gJson = new ol.format.GeoJSON();
+          var feats = [];
+          for (var i=0; i < json.features.length; i++) {
+            feats.push(gJson.readFeature(json.features[i]));
+          }
+          sit.geojsonLayer.getSource().addFeatures(feats)
 
-    });
+      });
+    };
 
-    var selectPointerMove = new ol.interaction.Select({
+    var selectSingleClick = new ol.interaction.Select({
          condition: ol.events.condition.selectSingleClick
-         // condition: ol.events.condition.pointerMove
      });
 
-     selectPointerMove.on('select', function(e) {
+     var selectPointerMove = new ol.interaction.Select({
+          condition: ol.events.condition.pointerMove
+      });
 
-       if (selectPointerMove.getFeatures().array_.length > 0) {
+     selectSingleClick.on('select', function(e) {
+
+       if (selectSingleClick.getFeatures().array_.length > 0) {
 
           $('#info').show();
-          var v = selectPointerMove.getFeatures().array_[0].values_
-          var html = 'Nom: ' + v.nom + '<tr>' ;
-          html += 'Commune: ' + v.commune + '<tr>';
-          html += 'État: ' + v.etat + '<tr>';
-          html += 'Type: ' + v.type + '<tr>';
-          html += 'Lien: ' + v.link + '<tr>';
+          var v = selectSingleClick.getFeatures().array_[0].values_
+          var html = '<b>Nom:</b> ' + v.nom + '<br>' ;
+          html += '<b>Commune:</b> ' + v.commune + '<br>';
+          html += '<b>État:</b> ' + v.etat + '<br>';
+          html += '<b>Type:</b> ' + v.type + '<br>';
+          html += '<b>Lien:</b> ' + v.link + '<br>';
           $('#info')[0].innerHTML = html;
       } else {
         $('#info').hide();
@@ -95,7 +97,7 @@ sit.initMap = function () {
     });
 
     var wmtsSource =  new ol.source.WMTS( /** @type {olx.source.WMTSOptions} */({
-        attributions: 'géodonnées &copy; Etat de Vaud & &copy; contributeurs OpenStreetMap',
+        attributions: 'mapnv.ch - géodonnées &copy; Etat de Vaud & &copy; contributeurs OpenStreetMap',
         url: 'https://ows{1-4}.asitvd.ch/wmts/1.0.0/{Layer}/default/default/0/' +
         '2056/{TileMatrix}/{TileRow}/{TileCol}.png',
         projection: 'EPSG:2056',
@@ -112,10 +114,13 @@ sit.initMap = function () {
         opacity: 1
     })
 
+    // var attributionControl = new ol.control.Attribution();
+
     sit.map = new ol.Map({
         controls: [
             new ol.control.ScaleLine(),
-            new ol.control.Zoom()
+            new ol.control.Zoom(),
+            new ol.control.Attribution()
         ],
         target: 'map',
         layers: [wmtsLayer, wmsLayer, sit.geojsonLayer],
@@ -128,7 +133,8 @@ sit.initMap = function () {
             extent: sit.mapExtent
         })
     });
-	
+
 	sit.map.addInteraction(selectPointerMove);
+  sit.map.addInteraction(selectSingleClick);
 
 }

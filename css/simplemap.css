@@ -1,41 +1,61 @@
-.map {
+#map {
     height: 100%;
     width: 100%;
-    border: none;
-    margin: none !important;
-    padding: none !important;
 }
 
 body {
     height: 100%;
     width: 100%;
-    border: none;
-    margin: none;
-    padding: none;
+    margin: 0;
 }
 
 html {
     height: 100%;
     width: 100%;
-    border: none;
-    margin: none;
-    padding: none;
 }
 
 #info {
+    padding-top: 10px;
+    padding-left: 15px;
     position: absolute;
     bottom: 0px;
-    height: 150px;
+    height: 120px;
     width: 100%;
-    background-color: #c9d8f2;
+    background-color: #e8e8e8;
     z-index: 100;
-    border: 1px solid gray;
+    border: 1px solid #bcbcbc;
     opacity: 0.8;
+    font-family: "Verdana", Geneva, sans-serif;
+    display: none;
 }
 
 #legend {
   position: absolute;
-  left: 50px;
-  top: 50px;
+  right: 0px;
+  top: 0px;
   z-index: 101;
+}
+
+/* unvisited link */
+a:link {
+   color: #4286f4;
+}
+
+/* visited link */
+a:visited {
+   color: #7b99bf;
+}
+
+/* mouse over link */
+a:hover {
+   color: #41c4f4;
+}
+
+/* selected link */
+a:active {
+   color: #41eef4;
+}
+
+.ol-attribution {
+    font-family: "Verdana", Geneva, sans-serif;
 }
