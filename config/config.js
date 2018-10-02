@@ -5,4 +5,4 @@ sit.initialZoom = 7;
 sit.mapCenter = [2538812, 1181380];
 sit.wmtsLayer = 'asitvd.fond_gris';
 sit.wms = 'https://dev.mapnv.ch/preprod/wsgi/mapserv_proxy';
-sit.wmslayers = [ 'AGGLOY_site_internet_polygones', 'AGGLOY_site_internet_lignes'];
+sit.wmslayers = ['SEY_fo_raccordement'];
